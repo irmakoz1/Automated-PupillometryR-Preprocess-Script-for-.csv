@@ -7,7 +7,7 @@ preprocess <- function(filepath, baseline=4) {
   file <- read.csv(filepath)
   print(dim(file)) ; flush.console()
   
-  file$Trial2 <- paste(file$Trial,file$Repetition,sep="_")
+  file$Trial2 <- paste(file$Trial,file$Repetition,sep="_") #IF THERE ARE REPEATED TRIALS, TO ADD THIS AS A DIFFERENT COLUMN
   file$pupilsDiameterL[file$pupilsDiameterL < 1 | file$pupilsDiameterL > 8] <- NA
   file$pupilsDiameterR[file$pupilsDiameterR < 1 | file$pupilsDiameterL > 8] <- NA
   file$User <- as.character(file$User)
@@ -61,7 +61,7 @@ preprocess <- function(filepath, baseline=4) {
 #
 ######################################
 
-setwd("C:/Users/irmak/Desktop/TEZ/data/newrealdata/pvdr51_14_02_17_21")
+setwd(...)
 folder <- dir()
 filepaths <- folder[grep("Trial",folder)]
 
@@ -69,9 +69,17 @@ user <- foreach(i=filepaths, .combine="rbind",.errorhandling="remove") %do% {
   preprocess(i, baseline=4)
 }
 
+#IF MERGING NEEDED
+
+file_list <- list.files()
+
+files  <- list.files(pattern = 'pvdr') #SPECIFY EACH FILES COMMON PATTERN TO RECOGNIZE
+df <- as.data.frame(readr::read_csv(files, id = "file_name"))
+head(df)
+
 
 head(user) ; dim(user)
 
 plot(user$mean_pupil[1:150],type="p",lwd=4,col=as.factor(user$sound_phase))
 
-write.csv(user,"C:/Users/irmak/Desktop/TEZ/data/preprocess/pvdr51_14_02_17_21_preprocessed.csv",row.names=FALSE)
+write.csv(..)
